@@ -1,5 +1,8 @@
 # Practical Session #1: Introduction
 
+Yoann DEWILDE\
+M2 ILA - Groupe 1
+
 1. Find in news sources a general public article reporting the discovery of a software bug. Describe the bug. If possible, say whether the bug is local or global and describe the failure that manifested its presence. Explain the repercussions of the bug for clients/consumers and the company or entity behind the faulty program. Speculate whether, in your opinion, testing the right scenario would have helped to discover the fault.
 
 2. Apache Commons projects are known for the quality of their code and development practices. They use dedicated issue tracking systems to discuss and follow the evolution of bugs and new features. The following link https://issues.apache.org/jira/projects/COLLECTIONS/issues/COLLECTIONS-794?filter=doneissues points to the issues considered as solved for the Apache Commons Collections project. Among those issues find one that corresponds to a bug that has been solved. Classify the bug as local or global. Explain the bug and the solution. Did the contributors of the project add new tests to ensure that the bug is detected if it reappears in the future?
@@ -11,3 +14,18 @@
 5.  Shortly after the appearance of WebAssembly another paper proposed a mechanized specification of the language using Isabelle. The paper can be consulted here: https://www.cl.cam.ac.uk/~caw77/papers/mechanising-and-verifying-the-webassembly-specification.pdf. This mechanized specification complements the first formalization attempt from the paper. According to the author of this second paper, what are the main advantages of the mechanized specification? Did it help improving the original formal specification of the language? What other artifacts were derived from this mechanized specification? How did the author verify the specification? Does this new specification removes the need for testing?
 
 ## Answers
+
+### Question 1
+
+
+Un bug sur Google Drive supprime des dossiers et fichiers. Certains utilisateurs ont perdu des données depuis plusieurs mois (https://www.lemondeinformatique.fr/actualites/lire-un-bug-dans-google-drive-supprime-certains-fichiers-92255.html).
+Il a été découvert le 22/11/2023 par [Yeonjoong](https://support.google.com/drive/thread/245055606/google-drive-files-suddenly-disappeared-the-drive-literally-went-back-to-condition-in-may-2023?hl=en&sjid=14021173013966303901-EU3?hl=en&sjid=14021173013966303901-EU), lorsqu'il a expliqué avoir perdu ses données depuis mai.
+De plus, il survient sur les versions web et desktop.
+Google n'ayant pas communiqué sur la cause pour l'instant, on ne peut pas déterminer s'il est global ou local.\
+Le bug a supprimé des données pour plusieurs utilisateurs, depuis plusieurs mois. 
+Google pourrait perdre des utilisateurs de Drive, ou d'autres de ses services, et également avoir une moins bonne réputation.
+
+Tester le bon scénario me semble difficile, car il y a très peu d'informations sur le bug.
+
+### Question 2
+
