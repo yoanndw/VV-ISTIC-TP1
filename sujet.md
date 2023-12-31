@@ -89,10 +89,12 @@ Non, Google, Facebook, Amazon, Microsoft utilisent cette technique.
 
 ### Question 4
 
-Avantages de la spécification formelle :
+L'avantage principal est que plusieurs propriétés peuvent être vérifiées statiquement :
 - typage sûr : tout programme plante, diverge, ou se termine avec les valeurs des bons types ;
-- abstraction du *host environment* (implémentation de l'interpréteur WebAssembly au sein d'un moteur JS), 
-- 
+- la mémoire est représentée sous forme d'un tableau une dimension, et les accès sont forcément à l'intérieur des bornes ;
+- chaque séquence de 32 ou 64 bits peut être désérialisée en valeur valide dans n'importe quel type de la bonne taille ;
+- WebAssembly nécessite qu'un programme soit validé par le *type-checker* avant son exécution.
+
 
 A mon avis, les implémentations de WebAssembly doivent être testées, afin de vérifier qu'elles respectent la spécification.
 
