@@ -23,9 +23,9 @@ M2 ILA - Groupe 1
 
 Un bug sur Google Drive supprime des dossiers et fichiers. Certains utilisateurs ont perdu des données depuis plusieurs mois (https://www.lemondeinformatique.fr/actualites/lire-un-bug-dans-google-drive-supprime-certains-fichiers-92255.html).
 Il a été découvert le 22/11/2023 par [Yeonjoong](https://support.google.com/drive/thread/245055606/google-drive-files-suddenly-disappeared-the-drive-literally-went-back-to-condition-in-may-2023?hl=en&sjid=14021173013966303901-EU3?hl=en&sjid=14021173013966303901-EU), lorsqu'il a expliqué avoir perdu ses données depuis mai.
-De plus, il survient sur les versions web et desktop.
-Google n'ayant pas communiqué sur la cause pour l'instant, on ne peut pas déterminer s'il est global ou local.\
-Le bug a supprimé des données pour plusieurs utilisateurs, depuis plusieurs mois. 
+Il survient sur les versions web et desktop.
+Google n'ayant pas communiqué sur la cause pour l'instant, on ne peut pas déterminer s'il est global ou local.
+
 Google pourrait perdre des utilisateurs de Drive, ou d'autres de ses services, et également avoir une moins bonne réputation.
 
 Tester le bon scénario nous semble difficile, car il y a très peu d'informations sur le bug.
@@ -34,7 +34,7 @@ Tester le bon scénario nous semble difficile, car il y a très peu d'informatio
 
 Bug: https://issues.apache.org/jira/browse/COLLECTIONS-813
 
-Le bug concerne la méthode Collection.retainAll(). Si l'un des paramètres est `null`, elle doit lancer une `NullPointerException` (NPE). Or, elle ne le fait pas.
+Le bug concerne la méthode `Collection.retainAll()`. Si l'un des paramètres est `null`, elle doit lancer une `NullPointerException` (NPE). Or, elle ne le fait pas.
 
 Le bug est local car il concerne directement le code.
 La solution a été de rajouter la vérification du paramètre dans la fonction. \
@@ -60,16 +60,16 @@ La mise en place des ces expériences requiert :
 - le contexte.
 
 Les variables observées sont :
-- disponibilité du système, car le dysfonctionnement de certains services n'impacte pas forcément la disponibilité du système ;
-- *(stream) starts per second* (SPS) : nombre de lancements de vidéos à chaque seconde, pour savoir si les utilisateurs peuvent regarder leur contenu ;
-- nouvelles créations de comptes par seconde : indique si le service est disponibles ou non.
+- la disponibilité du système, car le dysfonctionnement de certains services n'impacte pas forcément la disponibilité du système ;
+- les *(stream) starts per second* (SPS) : nombre de lancements de vidéos à chaque seconde, pour savoir si les utilisateurs peuvent regarder leur contenu ;
+- les nouvelles créations de comptes par seconde : indiquent si le service est disponible ou non.
 
 
 Définition d'une expérience :
 1. Définir le *steady-state behaviour*.
-2. Définir 2 groupes d'utilisateur : le groupe de contrôle, qui utilise l'application normale ; et le groupe expériemental, qui utilise l'application avec l'erreur introduite.
+2. Définir 2 groupes d'utilisateur : le groupe de contrôle, qui utilise l'application normale ; et le groupe expérimental, qui utilise l'application avec l'erreur introduite.
 3. Admettre que ce comportement normal perdure dans les 2 groupes.
-4. Introduire des variables qui représentent des événements réels, comme des crashs de serveurs, des dysfonctionnements du hardware, ...
+4. Introduire des variables qui représentent des événements réels, comme des crashs de serveurs, des dysfonctionnements du matériel, ...
 5. Démontrer une différence entre les comportements du système pour les 2 groupes.
 
 Si les 2 comportements sont identiques, alors le système est résilient à l'expérience. 
@@ -77,31 +77,28 @@ Sinon, l'expérience montre une amélioration possible.
 
 
 #### Résultats
-Les expériences permettent de détecter des difficulter à maintenir le système stable, et d'améliorer le système.
+Les expériences permettent de détecter des difficulter à maintenir le système stable, et de l'améliorer.
 
 Cependant, certaines fautes nécessitent des tests d'intégration, car elles sont liées aux interactions entre les composants.
 De plus, le *Chaos Engineering* est encore une pratique jeune dans l'industrie. Cet article a pour but de l'améliorer en définissant explicitement ses concepts.
 
-Leur système est fiable.
-
-
 #### Sont-ils les seuls ?
 
-Non, Google, Facebook, Amazon, Microsoft utilisent cette technique.
+Non, Google, Facebook, Amazon, ou encore Microsoft utilisent cette technique.
 
 #### Comment l'adapter à d'autres systèmes ?
 
 Le *Chaos Engineering* peut s'appliquer principalement aux services en ligne, comme les réseaux sociaux, Google Drive, etc.
-Ainsi, éteindre des serveurs ou injecter des latences entre les requêtes comme le fait Netflix est possible. Les nouvelles créations de comptes peuvent être suivies afin de vérifier la disponibilité du service.
+Ainsi, éteindre des serveurs ou injecter des latences entre les requêtes comme le fait Netflix est possible. De plus, les nouvelles créations de comptes peuvent être suivies afin de vérifier la disponibilité du service.
 
 Cependant, les autres expériences et variables dépendent de l'application. Voici un exemple avec les suites bureautiques, comme Google Drive et Microsoft Office :
 - Expériences :
     - rendre la synchronisation indisponible, pour vérifier l'édition en mode hors-ligne.
 - Variables :
-    - nombre de modifications sur des fichiers, il aurait le même objectif que le SPS pour Netflix ;
+    - nombre de modifications sur des fichiers, il aurait le même objectif que les SPS pour Netflix ;
     - temps de réponse lors de :
-        - création ou manipulation d'un fichier ;
-        - modification du contenu d'un fichier.
+        - la création ou la manipulation d'un fichier ;
+        - l'écriture dans un fichier.
  
 
 ### Question 4
@@ -127,13 +124,15 @@ Cela permet de représenter toutes les possibilités, tant que les preuves respe
 
 Cette spécification a montré plusieurs défaillances :
 - Le typage n'était pas assez robuste :
-    - L'instruction `trap`, qui correspond à une exception ingérable, doit se propager jusqu'au début de la pile, et arrêter le programme. Or, ce n'était pas toujours le cas.
+    - L'instruction `trap`, qui correspond à une exception ingérable, doit se propager jusqu'au début de la pile, et arrêter le programme. Or, la première version de la spécification empêchait `trap` de remonter.
 
     - L'opération `return` pouvait être considérée comme bien typée alors qu'elle n'était pas dans une fonction.
 
-    - Les *host functions* (fonction exécutée sur le *host environment*) doivent respecter des invariants. Or, certains invariants n'étaient pas assez précis dans la spécification. Par exemple : une *host function* peut modifier le type d'une variable immuable globale, alors que cela ne devrait pas être possible.
+    - Les *host functions* (fonctions exécutées sur le *host environment*) doivent respecter des invariants. Or, certains invariants n'étaient pas assez précis dans la spécification. Par exemple : une *host function* peut modifier le type d'une variable immuable globale, alors que cela ne devrait pas être possible.
 
 L'auteur a trouvé un contre-exemple pour chaque propriété. Les failles ont été communiquées au groupe de travail de WebAssembly, et ont été corrigées dans la spécification du langage.
+
+Cependant, un autre problème n'est pas évoqué. Dans leur modèle Isabelle, les *host functions* ne peuvent pas modifier la table des fonctions ou la liste des variables globales déclarées, contrairement à ce qui est spécifié. Malrgé cela, tous les tests conçus par le groupe de travail sur WebAssembly sont passés. Cela montre que ces tests ne suffisent pas à vérifier toutes les propriétés attendues.
 
 #### Quels artéfacts ont été dérivés ?
 
