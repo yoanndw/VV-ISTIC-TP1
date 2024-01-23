@@ -28,7 +28,7 @@ Google n'ayant pas communiqué sur la cause pour l'instant, on ne peut pas déte
 Le bug a supprimé des données pour plusieurs utilisateurs, depuis plusieurs mois. 
 Google pourrait perdre des utilisateurs de Drive, ou d'autres de ses services, et également avoir une moins bonne réputation.
 
-Tester le bon scénario me semble difficile, car il y a très peu d'informations sur le bug.
+Tester le bon scénario nous semble difficile, car il y a très peu d'informations sur le bug.
 
 ### Question 2
 
@@ -53,7 +53,7 @@ Ces expériences peuvent être :
 - faire échouer un service interne ;
 - rendre une région Amazon entière non disponible.
 
-La mise en place des ces exépriences requiert :
+La mise en place des ces expériences requiert :
 - d'émettre des hypothèses sur l'influence des expériences sur le *steady-state behaviour*, c'est-à-dire le comportement normal de l'application, plus précisément des métriques mesurées pendant l'expérience ;
 - des variables indépendantes ;
 - des variables dépendantes ;
@@ -76,16 +76,33 @@ Si les 2 comportements sont identiques, alors le système est résilient à l'ex
 Sinon, l'expérience montre une amélioration possible.
 
 
-Résultats:
-Certaines fautes nécessitent des tests d'intégration, car elles sont liées aux interactions entre les composants.
+#### Résultats
+Les expériences permettent de détecter des difficulter à maintenir le système stable, et d'améliorer le système.
 
-Leur système est fiable
-De plus, les ingénieurs de Netflix savent reconnaître les fluctuations normales d'une métrique des fluctuations anormales.
-Cependant, 
+Cependant, certaines fautes nécessitent des tests d'intégration, car elles sont liées aux interactions entre les composants.
+De plus, le *Chaos Engineering* est encore une pratique jeune dans l'industrie. Cet article a pour but de l'améliorer en définissant explicitement ses concepts.
 
-Sont-ils les seuls ?
+Leur système est fiable.
+
+
+#### Sont-ils les seuls ?
+
 Non, Google, Facebook, Amazon, Microsoft utilisent cette technique.
 
+#### Comment l'adapter à d'autres systèmes ?
+
+Le *Chaos Engineering* peut s'appliquer principalement aux services en ligne, comme les réseaux sociaux, Google Drive, etc.
+Ainsi, éteindre des serveurs ou injecter des latences entre les requêtes comme le fait Netflix est possible. Les nouvelles créations de comptes peuvent être suivies afin de vérifier la disponibilité du service.
+
+Cependant, les autres expériences et variables dépendent de l'application. Voici un exemple avec les suites bureautiques, comme Google Drive et Microsoft Office :
+- Expériences :
+    - rendre la synchronisation indisponible, pour vérifier l'édition en mode hors-ligne.
+- Variables :
+    - nombre de modifications sur des fichiers, il aurait le même objectif que le SPS pour Netflix ;
+    - temps de réponse lors de :
+        - création ou manipulation d'un fichier ;
+        - modification du contenu d'un fichier.
+ 
 
 ### Question 4
 
@@ -96,21 +113,21 @@ L'avantage principal est que plusieurs propriétés peuvent être vérifiées st
 - WebAssembly nécessite qu'un programme soit validé par le *type-checker* avant son exécution.
 
 
-A mon avis, les implémentations de WebAssembly doivent être testées, afin de vérifier qu'elles respectent la spécification.
+Selon nous, les implémentations de WebAssembly doivent être testées, afin de vérifier qu'elles respectent la spécification.
 
 ### Question 5
 
 #### Avantages
 
 - Les calculs arithmétiques se basent sur leur implémentation dans Isabelle, qui est prouvée.
-- Les calculs arithmétiques, le tas et le comportement du *host environment* sont abstraits grâce aux *locales* d'Isabelle. La *locale* est un **....** Ici, elle encode les propriétés du tas.
+- Les calculs arithmétiques, le tas et le comportement du *host environment* sont abstraits grâce aux *locales* d'Isabelle. Une *locale* est un contexte facilitant la preuve au sein de celui-ci. Ici, elle encode les propriétés du tas.
 Cela permet de représenter toutes les possibilités, tant que les preuves respectent les hypothèses de la *locale*.
 
-#### Ca a amélioré la spécification ?
+#### Cela a-t-il amélioré la spécification ?
 
-A montré plusieurs défaillances :
+Cette spécification a montré plusieurs défaillances :
 - Le typage n'était pas assez robuste :
-    - L'instruction `trap`, qui correspond à une exception ingérable, doit se propager jusqu'au début de la pile, et arrêter le programme. 
+    - L'instruction `trap`, qui correspond à une exception ingérable, doit se propager jusqu'au début de la pile, et arrêter le programme. Or, ce n'était pas toujours le cas.
 
     - L'opération `return` pouvait être considérée comme bien typée alors qu'elle n'était pas dans une fonction.
 
@@ -127,10 +144,10 @@ Un interpréteur et un *type checker* vérifiés.
 Tests de l'interpréteur :
 
 - Tests de conformité disponibles sur le dépôt WebAssembly.
-- Tests *fuzzing* contre plusieurs interpréteurs existants. But : valiser et détecter des bugs dans les autres implémentations. Les tests sont générés en C avec l'outil CSmith, et convertis en WebAssembly grâce à la chaîne d'outils Binaryen. Cela simule la façon dont la plupart des programmes WebAssembly sont créés.
+- Tests *fuzzing* contre plusieurs interpréteurs existants. But : valider et détecter des bugs dans les autres implémentations. Les tests sont générés en C avec l'outil CSmith, et convertis en WebAssembly grâce à la chaîne d'outils Binaryen. Cela simule la façon dont la plupart des programmes WebAssembly sont créés.
 
 Aucun bug n'a été trouvé dans leur implémentation, ni dans les autres. Cependant, un bug a été trouvé dans Binaryen, qui a été signalé et corrigé.
 
 #### Cela supprime-t-il le besoin de tester ?
 
-Non, car l'automatisation peut ne pas respecter la spécification à 100 %. C'est le cas avec la reproduction limitée du comprtement des *host functions*.
+Non, car l'automatisation peut ne pas respecter la spécification à 100 %. C'est le cas avec la reproduction limitée du comportement des *host functions*.
